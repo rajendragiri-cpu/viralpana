@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 180" role="img" aria-labelledby="title desc">
+  <title id="title">ViralPANA transparent logo</title>
+  <desc id="desc">Viral Pana: The Wave of Truth</desc>
+  <defs>
+    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1978aa"/><stop offset="1" stop-color="#06315e"/></linearGradient>
+    <linearGradient id="orange" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ff7619"/><stop offset="1" stop-color="#f43b11"/></linearGradient>
+  </defs>
+  <g aria-hidden="true">
+    <path fill="url(#blue)" d="M118 11c12 7 18 19 18 35v117L16 199 5 161a38 38 0 0 1 20-45l67-34c12-6 25-18 30-33 7-20 4-31-4-38Z" transform="translate(-4 -23)"/>
+    <path fill="#fff" d="M30 84c-1 0 45-12 67-22l11 11a148 148 0 0 1-73 27L30 84Z" opacity=".98"/>
+    <path fill="#fff" d="M50 116c22-7 42-15 59-24l11 12c-17 11-38 20-61 28l-9-16Z" opacity=".98"/>
+    <path fill="#fff" d="M82 145c21-10 37-20 53-29l-20 49H85l-3-20Z" opacity=".98"/>
+  </g>
+  <text x="172" y="86" fill="#111111" font-family="Georgia, 'Times New Roman', serif" font-size="68" font-style="italic" font-weight="700" letter-spacing="-3">Viral</text>
+  <g fill="url(#orange)" font-family="Impact, 'Arial Black', sans-serif" font-weight="900" letter-spacing="1.5">
+    <text x="332" y="88" font-size="72" transform="rotate(-1 332 88)">P</text>
+    <text x="385" y="88" font-size="70" transform="rotate(1 385 88)">A</text>
+    <text x="440" y="88" font-size="70" transform="rotate(-1 440 88)">N</text>
+    <text x="494" y="88" font-size="70" transform="rotate(1 494 88)">A</text>
+  </g>
+  <text x="176" y="137" fill="#707070" font-family="Georgia, 'Times New Roman', serif" font-size="25" font-style="italic" font-weight="700">"Viral Pana: The Wave of Truth."</text>
+</svg>

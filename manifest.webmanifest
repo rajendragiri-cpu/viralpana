@@ -1,0 +1,17 @@
+{
+  "name": "ViralPANA",
+  "short_name": "ViralPANA",
+  "start_url": "https://viral-pana2083.arena.site/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#071827",
+  "theme_color": "#071827",
+  "description": "Nepali premium news and blog portal",
+  "icons": [
+    {
+      "src": "/images/viralpana-logo-transparent.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: Inter, "Noto Sans Devanagari", "Nirmala UI", Mangal, Arial, sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+body { margin: 0; background: #f5f9fb; color: #132f42; font-family: var(--font-sans); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+::selection { background: #cf1f24; color: white; }
+button, a, input, textarea, select { font: inherit; -webkit-tap-highlight-color: transparent; }
+button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 2px solid #ff4d1a; outline-offset: 3px; }
+img { max-width: 100%; }
+.brand-logo { line-height: 0; }
+.brand-logo .viralpana-brand-image { display: block; width: auto !important; height: 68px !important; max-height: 68px; border: 0; margin: 0 auto; }
+@media (min-width: 640px) { .brand-logo .viralpana-brand-image { height: 72px !important; max-height: 72px; } }
+
+@media (max-width: 1023px) {
+  body { padding-bottom: 62px; }
+}
+
+.eyebrow { color: #cf1f24; font-size: .76rem; font-weight: 900; letter-spacing: .18em; text-transform: uppercase; }
+.eyebrow.blue { color: #cf1f24; }
+.eyebrow.orange { color: #cf1f24; }
+.section-title { margin-top: 1rem; max-width: 54rem; color: #102b3d; font-size: clamp(2.8rem, 6vw, 5.4rem); font-weight: 950; line-height: .98; letter-spacing: -.065em; }
+.section-copy { margin-top: 1.35rem; max-width: 36rem; color: #647d8c; font-size: 1.06rem; line-height: 1.85; }
+
+.prose-news { color: #334e60; font-size: clamp(1.02rem, .96rem + .28vw, 1.16rem); line-height: 2; max-width: 72ch; margin-inline: auto; text-align: left; }
+.prose-news p { text-wrap: pretty; }
+.prose-news p + p { margin-top: 1.35em; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; }
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.animate-marquee { animation: marquee 34s linear infinite; }
+.animate-marquee:hover { animation-play-state: paused; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
