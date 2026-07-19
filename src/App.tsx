@@ -4,6 +4,8 @@ import AdminPanel from "./components/AdminPanel";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { defaultSettings, seedPosts, uid, type PortalSettings, type Post, type Subscriber } from "./data/portal";
 
+const ADMIN_PASSWORD = "ViralPana@2026!";
+
 function usePersistentState<T>(key: string, initial: T) {
   const [value, setValue] = useState<T>(() => {
     try {
@@ -55,6 +57,7 @@ export default function App() {
   const [storedSubscribers, setStoredSubscribers] = usePersistentState<Subscriber[]>("viralpana.subscribers.v2", []);
   const [importedPosts, setImportedPosts] = useState<Post[]>([]);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+  const [adminAuthed, setAdminAuthed] = useState(false);
 
   const localPosts = useMemo(() => (Array.isArray(storedPosts) ? storedPosts.filter(Boolean).map(normalizePost) : []), [storedPosts]);
   const settings = useMemo(() => ({ ...defaultSettings, ...storedSettings }), [storedSettings]);
@@ -68,6 +71,12 @@ export default function App() {
     window.addEventListener("hashchange", onHash);
     return () => window.removeEventListener("hashchange", onHash);
   }, []);
+
+  useEffect(() => {
+    if (route !== "admin" && route !== "/admin") {
+      setAdminAuthed(false);
+    }
+  }, [route]);
 
   useEffect(() => {
     let active = true;
@@ -107,9 +116,22 @@ export default function App() {
   }, [localPosts]);
 
   const posts = useMemo(() => [...importedPosts, ...localPosts], [importedPosts, localPosts]);
-  const isAdmin = route === "admin" || route === "/admin";
-  const goAdmin = () => { window.location.hash = "admin"; };
-  const goHome = () => { window.location.hash = ""; };
+  const isAdmin = (route === "admin" || route === "/admin") && adminAuthed;
+
+  const goAdmin = () => {
+    const password = prompt("🔒 Admin Password लेख्नुहोस्:");
+    if (password === ADMIN_PASSWORD) {
+      setAdminAuthed(true);
+      window.location.hash = "admin";
+    } else if (password !== null) {
+      alert("❌ गलत password! Admin access नाइँ।");
+    }
+  };
+
+  const goHome = () => {
+    setAdminAuthed(false);
+    window.location.hash = "";
+  };
 
   const openPost = (post: Post) => {
     if (post.source === "blogger" && importedPosts.some(p => p.id === post.id)) {
