@@ -4,7 +4,12 @@ import AdminPanel from "./components/AdminPanel";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { defaultSettings, seedPosts, uid, type PortalSettings, type Post, type Subscriber } from "./data/portal";
 
-const ADMIN_PASSWORD = "ViralPana@2026!";
+const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || "";
+
+if (!ADMIN_PASSWORD) {
+  // Warn at runtime during development if no env var is provided
+  console.warn("VITE_ADMIN_PASSWORD not set — admin route disabled. Configure server-side auth for production.");
+}
 
 function usePersistentState<T>(key: string, initial: T) {
   const [value, setValue] = useState<T>(() => {
@@ -119,6 +124,10 @@ export default function App() {
   const isAdmin = (route === "admin" || route === "/admin") && adminAuthed;
 
   const goAdmin = () => {
+    if (!ADMIN_PASSWORD) {
+      alert("Admin access disabled locally. Configure VITE_ADMIN_PASSWORD or use a backend auth (Supabase/Auth0) for production.");
+      return;
+    }
     const password = prompt("🔒 Admin Password लेख्नुहोस्:");
     if (password === ADMIN_PASSWORD) {
       setAdminAuthed(true);

@@ -53,7 +53,7 @@ export const defaultSettings: PortalSettings = {
   adUrl: "mailto:Viralpanaa@gmail.com",
   adsenseClient: "",
   adsenseSlot: "",
-  adminPin: "viralpana2026",
+  adminPin: "",
   primaryEmail: "Viralpanaa@gmail.com",
 };
 
