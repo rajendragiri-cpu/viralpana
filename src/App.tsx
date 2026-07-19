@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import PublicPortal, { ArticleModal } from "./components/PublicPortal";
+import PublicPortal from "./components/PublicPortal";
 import AdminPanel from "./components/AdminPanel";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { defaultSettings, seedPosts, uid, type PortalSettings, type Post, type Subscriber } from "./data/portal";
@@ -36,14 +36,18 @@ function stripHtml(html: string) {
 
 function normalizePost(post: Partial<Post>): Post {
   const fallback = seedPosts[0];
+  const title = String(post.title || "Untitled");
+  const wordCount = title.split(/\s+/).length + (post.content ? post.content.split(/\s+/).length : 0);
+  const readTime = Math.max(1, Math.ceil(wordCount / 250));
   return {
     ...fallback,
     ...post,
     id: post.id || uid(),
-    title: String(post.title || "Untitled"),
+    title,
+    slug: post.slug || title.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
     type: post.type === "blog" ? "blog" : "news",
     category: String(post.category || "समाचार"),
-    status: post.status === "draft" ? "draft" : "published",
+    status: (post.status === "draft" || post.status === "scheduled") ? post.status : "published",
     featured: Boolean(post.featured),
     breaking: Boolean(post.breaking),
     author: String(post.author || "ViralPANA"),
@@ -51,7 +55,18 @@ function normalizePost(post: Partial<Post>): Post {
     excerpt: String(post.excerpt || "ViralPANA editorial update।"),
     content: String(post.content || post.excerpt || "ViralPANA editorial update।"),
     publishedAt: post.publishedAt || new Date().toISOString(),
+    updatedAt: post.updatedAt || new Date().toISOString(),
     views: Number.isFinite(Number(post.views)) ? Number(post.views) : 0,
+    tags: Array.isArray(post.tags) ? post.tags : [],
+    readTime: Number.isFinite(Number(post.readTime)) ? Number(post.readTime) : readTime,
+    seo: {
+      metaDescription: post.seo?.metaDescription || post.excerpt?.slice(0, 160) || "",
+      metaKeywords: post.seo?.metaKeywords || post.category,
+      ogImage: post.seo?.ogImage || post.image,
+      ogTitle: post.seo?.ogTitle || title,
+      ogDescription: post.seo?.ogDescription || post.excerpt,
+      canonicalUrl: post.seo?.canonicalUrl || "",
+    },
   };
 }
 
@@ -61,7 +76,6 @@ export default function App() {
   const [storedSettings, setStoredSettings] = usePersistentState<PortalSettings>("viralpana.settings.v2", defaultSettings);
   const [storedSubscribers, setStoredSubscribers] = usePersistentState<Subscriber[]>("viralpana.subscribers.v2", []);
   const [importedPosts, setImportedPosts] = useState<Post[]>([]);
-  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [adminAuthed, setAdminAuthed] = useState(false);
 
   const localPosts = useMemo(() => (Array.isArray(storedPosts) ? storedPosts.filter(Boolean).map(normalizePost) : []), [storedPosts]);
@@ -148,7 +162,6 @@ export default function App() {
     } else {
       setLocalPosts(current => current.map(p => p.id === post.id ? { ...p, views: p.views + 1 } : p));
     }
-    setSelectedPost({ ...post, views: post.views + 1 });
   };
 
   const subscribe = (email: string) => {
@@ -159,6 +172,5 @@ export default function App() {
 
   return <ErrorBoundary>
     {isAdmin ? <AdminPanel posts={localPosts} setPosts={setLocalPosts} settings={settings} setSettings={setSettings} subscribers={subscribers} setSubscribers={setSubscribers} importedCount={importedCount} onExit={goHome} /> : <PublicPortal posts={posts} settings={settings} onOpen={openPost} onSubscribe={subscribe} onAdmin={goAdmin} />}
-    <ArticleModal post={selectedPost} settings={settings} related={selectedPost ? posts.filter(p => p.id !== selectedPost.id && p.category === selectedPost.category) : []} onOpen={openPost} onClose={() => setSelectedPost(null)} />
   </ErrorBoundary>;
 }
